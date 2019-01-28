@@ -1,0 +1,34 @@
+version: "2"
+
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./etc/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./laravel/public:/var/www/laravel/public
+    ports:
+      - 8080:80
+    links:
+      - phpfpm
+    depends_on:
+      - phpfpm
+  phpfpm:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./laravel:/var/www/laravel
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    environment:
+      - DB_HOST=mysql
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=pass
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=laravel
