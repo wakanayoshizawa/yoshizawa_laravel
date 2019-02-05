@@ -33,6 +33,10 @@ Route::get('/', function () {
  * 新タスク追加
  */
 Route::post('/task', function (Request $request) {
+    if (!Auth::check()) {
+        return redirect('/login');
+    }
+
     $validator = Validator::make($request->all(), [
         //'name' => 'required|max:255',
         'name' => 'required|max:191',
@@ -55,7 +59,15 @@ Route::post('/task', function (Request $request) {
  * 既存タスク削除
  */
 Route::delete('/task/{id}', function ($id) {
+    if (!Auth::check()) {
+        return redirect('/login');
+    }
+
     Task::findOrFail($id)->delete();
 
     return redirect('/');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
