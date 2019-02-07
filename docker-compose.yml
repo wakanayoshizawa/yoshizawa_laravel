@@ -5,7 +5,7 @@ services:
     image: nginx:alpine
     volumes:
       - ./etc/nginx/conf.d/:/etc/nginx/conf.d/
-      - ./laravel/public:/var/www/laravel/public
+      - ./public:/var/www/laravel/public
     ports:
       - 8080:80
     links:
@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     volumes:
-      - ./laravel:/var/www/laravel
+      - ./:/var/www/laravel
     links:
       - mysql
     depends_on:
