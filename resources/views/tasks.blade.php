@@ -6,15 +6,12 @@
     <div class="container">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    新しいタスク
-                </div>
                 <div class="panel-body">
                     <!-- バリデーションエラーの表示 -->
                     @include('common.errors')
 
                     <!-- 新タスクフォーム -->
-                    <form action="./task" method="POST" class="form-horizontal">
+                    <form action="/task" method="POST" class="form-horizontal">
                         {{ csrf_field() }}
 
                         <!-- タスク名 -->
@@ -51,6 +48,8 @@
                             <!-- テーブルヘッダー -->
                             <thead>
                                 <th>Task</th>
+                                <th>Name</th>
+                                <th>&nbsp;</th>
                                 <th>&nbsp;</th>
                             </thead>
 
@@ -63,9 +62,22 @@
                                             <div>{{ $task->name }}</div>
                                         </td>
 
+                                        <td class="table-text">
+                                            <div>{{ $task->user_name }}</div>
+                                        </td>
+
+                                        <td>
+                                            <form action="/task_update/{{ $task->id }}" method="POST">
+                                                {{ csrf_field() }}
+                                                {{ method_field('GET') }}
+
+                                                <button>タスク変更</button>
+                                            </form>
+                                        </td>
+
                                         <td>
                                             <!-- 削除ボタン -->
-                                            <form action="./task/{{ $task->id }}" method="POST">
+                                            <form action="/task/{{ $task->id }}" method="POST">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
 
